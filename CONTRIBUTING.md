@@ -204,6 +204,28 @@ end MyProblem
 Replace `YYYY` with the current year, and consider adding yourself to the list
 of authors in the `AUTHORS` file.
 
+### Reference Style Guidelines
+
+- Keep the Erdős problem page itself as
+  `[erdosproblems.com/N](https://www.erdosproblems.com/N)`.
+- Prefer the citation key used by the Erdős Problems source/BibTeX when
+  available, e.g. `[Er54]`, `[Gu04]`, `[ErGr80]`.
+- If no source key is available, use a compact author-year key:
+  - one author: first surname letters plus two-digit year, e.g. `[Ta16]`;
+  - two authors: first surname letters of each plus year, e.g. `[ErGr80]`;
+  - three or more authors: initials plus year, e.g. `[EFRS93]`;
+  - add a lowercase suffix or extra surname letter when needed to avoid
+    collisions, e.g. `[Ta26b]`, `[Tan26]`.
+- For stable non-paper sources, use descriptive labels when an author-year key
+  would be misleading, e.g. `[Wikipedia]`, `[MathOverflow]`, `[A002858]`.
+- Avoid raw URLs, malformed links, and placeholder entries such as
+  `(No references found)`.
+- Do not put bibliography prose inside markdown link targets. Prefer
+  `[Key] Author, Title. Venue (Year).` or
+  `[Key] Author, [Title](URL). Venue (Year).`
+- If theorem/docstring text cites a reference key, keep it synchronized with
+  the key in the module reference list.
+
 ## The `@[category]` attribute
 
 A tag to mark the category of a problem statement. Every statement must have
