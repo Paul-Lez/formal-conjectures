@@ -61,10 +61,8 @@ noncomputable def aeval {σ τ : Type*} {S₁ : Type*} [CommSemiring S₁] [Alge
 lemma comp_aeval
     {σ τ ι : Type*}
     (F : RegularFunction k σ τ) (G : RegularFunction k τ ι)
-    (a : σ → k) : (F.comp G).aeval a = G.aeval (F.aeval a) := by
-  ext i
-  rw [aeval, comp, MvPolynomial.aeval_bind₁, ←aeval]
-  rfl
+    (a : σ → k) : (F.comp G).aeval a = G.aeval (F.aeval a) :=
+  funext fun i => MvPolynomial.aeval_bind₁ a F (G i)
 
 end RegularFunction
 
@@ -100,12 +98,12 @@ lemma det_jacobian_F : (F k).Jacobian.det = 1 := by
   simp only [map_ofNat]
   ring
 
-/-- `F` identifies the two distinct points `(1, -3/4, 13/4)` and `(-1, 3/4, 13/4)`. -/
+/-- `F` identifies the two distinct points `(1, 0, 1)` and `(0, 3, -71)`. -/
 @[category API, AMS 14]
-lemma aeval_F_eq [CharZero k] :
-    (F k).aeval ![1, -(3 / 4), (13 / 4 : k)] = (F k).aeval ![-1, 3 / 4, 13 / 4] := by
+lemma aeval_F_eq :
+    (F k).aeval ![1, 0, (1 : k)] = (F k).aeval ![0, 3, -71] := by
   funext i
-  fin_cases i <;> simp [RegularFunction.aeval, F] <;> field_simp <;> ring
+  fin_cases i <;> simp [RegularFunction.aeval, F]; ring
 
 set_option linter.style.answer_attribute false in
 /-- The **Jacobian Conjecture**: any regular function
@@ -122,12 +120,9 @@ theorem jacobian_conjecture {k : Type} [Field k] [CharZero k] :
   rw [false_iff]
   intro h
   obtain ⟨G, -, hFG⟩ := h (F k) (det_jacobian_F k ▸ isUnit_one)
-  have hleft : Function.LeftInverse (G.aeval (S₁ := k)) ((F k).aeval) := fun a => by
-    rw [← RegularFunction.comp_aeval, hFG]
-    funext t
-    simp [RegularFunction.aeval, RegularFunction.id]
-  have h1 : (1 : k) = -1 := congrFun (hleft.injective (aeval_F_eq k)) 0
-  norm_num at h1
+  have h1 := congrArg (G.aeval (S₁ := k)) (aeval_F_eq k)
+  rw [← RegularFunction.comp_aeval, ← RegularFunction.comp_aeval, hFG] at h1
+  simpa [RegularFunction.aeval, RegularFunction.id] using congrFun h1 0
 
 /-- Does the Jacobian conjecture hold in the two variable case? -/
 @[category research open, AMS 14]
@@ -160,9 +155,7 @@ theorem jacobian_conjecture_identity (H : JacobianConjectureProp k σ) :
     (id k σ).comp G = id k σ := by
   apply H
   suffices (RegularFunction.id k σ).Jacobian = 1 by simp only [this, isUnit_one, Matrix.det_one]
-  ext i j
-  simp only [RegularFunction.Jacobian, RegularFunction.id, MvPolynomial.pderiv_X,
-    Matrix.of_apply, Matrix.one_eq_pi_single]
+  exact Matrix.ext fun i j => (MvPolynomial.pderiv_X i j).trans Matrix.one_eq_pi_single.symm
 
 end Tests
 
