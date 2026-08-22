@@ -462,7 +462,7 @@ function renderDetail(theorem, siblings, verso, contributors) {
   const moduleDocSection = moduleDocHTML ? `
     <div class="theorem-detail__section verso-module-doc">
       <div class="detail-label">Module overview
-        <span style="font-weight:400;font-size:.8rem;margin-left:.5rem;color:var(--color-text-muted);text-transform:none">${FC.escapeHTML(theorem.displayModule)}</span>
+        <span class="detail-context">${FC.escapeHTML(theorem.displayModule)}</span>
       </div>
       <div class="verso-doc-content">${moduleDocHTML}</div>
     </div>` : '';
@@ -474,8 +474,9 @@ function renderDetail(theorem, siblings, verso, contributors) {
       <div class="verso-doc-content">${docHtml}</div>
     </div>` : '';
 
-  // Code placeholder (async-filled) with GitHub + Verso links
-  const codeSection = versoLink ? `
+  // Code placeholder (async-filled) with GitHub + Verso links.  Keep this
+  // section visible for generated declarations that Verso cannot anchor.
+  const codeSection = `
     <div class="theorem-detail__section">
       <div class="detail-label">
         Lean code
@@ -485,9 +486,14 @@ function renderDetail(theorem, siblings, verso, contributors) {
            style="font-weight:400;font-size:.8rem;margin-left:.5rem">Verso ↗</a>` : ''}
       </div>
       <div id="verso-code-container" class="verso-code-container">
-        <div class="verso-code-loading">Loading highlighted code…</div>
+        ${versoLink
+          ? '<div class="verso-code-loading">Loading highlighted code…</div>'
+          : `<div class="verso-code-fallback">
+              Highlighted code is unavailable for this generated declaration name.
+              ${versoSourceUrl ? `<a href="${versoSourceUrl}">View the annotated source →</a>` : ''}
+            </div>`}
       </div>
-    </div>` : '';
+    </div>`;
 
   // A statement can carry several `formal_proof` annotations, each with its own
   // assumptions, so list them one by one. `conditions` names declarations stated with
