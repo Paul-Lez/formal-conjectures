@@ -1,0 +1,236 @@
+/* Formal Conjectures overrides for the generated Verso source browser. */
+@font-face {
+  font-family: 'Libertinus Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/LibertinusSans-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Libertinus Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/LibertinusMono-Regular.woff2') format('woff2');
+}
+
+:root {
+  --src-border: #e2e8f0;
+  --src-link: #2563eb;
+  --src-muted: #64748b;
+  --src-nav: #0f172a;
+  --verso-code-font-family: 'Libertinus Mono', 'SFMono-Regular', Menlo, monospace;
+  --verso-text-font-family: 'Libertinus Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;
+  background: #fff;
+  color: #1a202c;
+}
+
+.layout {
+  align-items: flex-start;
+  height: auto;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 17rem;
+  height: 100vh;
+  border-color: var(--src-border);
+  background: #f8fafc;
+  scrollbar-gutter: stable;
+}
+
+.nav-title {
+  margin-bottom: 0.75rem;
+  color: var(--src-nav);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.module-filter-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.module-filter {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.module-filter:focus {
+  outline: 3px solid rgb(37 99 235 / 15%);
+  border-color: var(--src-link);
+}
+
+.module-tree details {
+  margin-left: 0.65rem;
+}
+
+.module-tree summary,
+.module-tree .leaf {
+  overflow-wrap: anywhere;
+}
+
+.module-tree summary.current,
+.module-tree .current {
+  background: var(--src-link);
+}
+
+.main-area,
+.content-wrapper,
+.code-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.main-area {
+  overflow: visible;
+}
+
+.title-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  padding: 0.75rem 1.5rem;
+  border-color: var(--src-border);
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(8px);
+}
+
+.breadcrumbs {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+}
+
+.breadcrumbs li {
+  flex: none;
+}
+
+.site-home-link {
+  flex: none;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--src-border);
+  border-radius: 0.375rem;
+  color: var(--src-link);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.site-home-link:hover {
+  background: #f8fafc;
+  text-decoration: none;
+}
+
+.code-content {
+  width: 100%;
+  overflow: visible;
+  padding: 1.75rem clamp(1rem, 3vw, 2.5rem) max(4rem, 50vh);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.code-content .hl.lean.block {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.code-content .verso-text,
+.code-content .md-text {
+  width: min(100%, 48rem);
+  max-width: 100%;
+  border-color: var(--src-border);
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  overflow-wrap: anywhere;
+}
+
+.code-content .verso-text > *,
+.code-content .md-text > * {
+  width: auto;
+}
+
+[id]:target {
+  scroll-margin-top: 4.5rem;
+}
+
+.const:target {
+  border-radius: 0.2rem;
+  background: #fef3c7;
+  box-shadow: 0 0 0 0.2rem #fef3c7;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--src-nav);
+  color: #fff;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    height: 100dvh;
+  }
+
+  .main-area {
+    width: 100%;
+  }
+
+  .title-bar {
+    gap: 0.5rem;
+    padding: 0.65rem 0.75rem 0.65rem 3.75rem;
+  }
+
+  .site-home-link {
+    padding-inline: 0.45rem;
+  }
+
+  .code-content {
+    padding: 1rem 0.75rem max(3rem, 50vh);
+    font-size: 0.82rem;
+  }
+
+  .code-content .verso-text,
+  .code-content .md-text {
+    margin-left: 0;
+  }
+}

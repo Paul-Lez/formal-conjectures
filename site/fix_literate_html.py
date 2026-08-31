@@ -6,12 +6,14 @@ Fixes:
 1. Adds KaTeX for LaTeX rendering in docstrings
 2. Creates stub JS files for missing search infrastructure
 3. Fixes domain-mappers.js module syntax
+4. Adds the Formal Conjectures source-page styles and navigation helpers
 
 Usage: python3 fix_literate_html.py <literate-html-dir>
 """
 
 import os
 import re
+import shutil
 import sys
 
 KATEX_HEAD = '''
@@ -37,32 +39,73 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 '''
 
+SITE_HEAD = '''
+    <link rel="stylesheet" href="formal-conjectures.css">
+    <script defer src="formal-conjectures.js"></script>
+'''
+
+SITE_HOME_LINK = '''
+          <a class="site-home-link" href="../" title="Return to the Formal Conjectures website">← Main site</a>'''
+
+SITE_NAV_FILTER = '''
+            <label class="module-filter-label" for="module-filter">Filter modules</label>
+            <input class="module-filter" id="module-filter" type="search"
+              placeholder="Filter modules…" autocomplete="off">'''
+
 
 def fix_html_file(path):
-    """Inject KaTeX into a Verso HTML file."""
+    """Inject site assets and KaTeX into a Verso HTML file."""
     with open(path, 'r', encoding='utf-8') as f:
         html = f.read()
 
     modified = False
 
-    # Skip if KaTeX already present
-    if 'katex' in html.lower():
-        return False
-
     # Add KaTeX CSS+JS before </head>
-    if '</head>' in html:
+    if 'katex' not in html.lower() and '</head>' in html:
         html = html.replace('</head>', KATEX_HEAD + '  </head>')
         modified = True
 
     # Add auto-render script before </body>
-    if '</body>' in html:
+    if 'renderMathInElement(document.body' not in html and '</body>' in html:
         html = html.replace('</body>', KATEX_BODY_SCRIPT + '</body>')
+        modified = True
+
+    if 'formal-conjectures.css' not in html and '</head>' in html:
+        html = html.replace('</head>', SITE_HEAD + '  </head>')
+        modified = True
+
+    if 'site-home-link' not in html:
+        html = html.replace(
+            '<header class="title-bar">',
+            '<header class="title-bar">' + SITE_HOME_LINK,
+            1,
+        )
+        modified = True
+
+    if 'module-filter' not in html:
+        html = re.sub(
+            r'(<div class="nav-title">\s*FormalConjectures</div>)',
+            r'\1' + SITE_NAV_FILTER,
+            html,
+            count=1,
+        )
         modified = True
 
     if modified:
         with open(path, 'w', encoding='utf-8') as f:
             f.write(html)
     return modified
+
+
+def copy_site_assets(literate_dir):
+    """Copy the source-page stylesheet and script to the literate root."""
+    source_dir = os.path.dirname(__file__)
+    assets = {
+        os.path.join(source_dir, 'src', 'css', 'literate.css'): 'formal-conjectures.css',
+        os.path.join(source_dir, 'src', 'js', 'literate.js'): 'formal-conjectures.js',
+    }
+    for source, name in assets.items():
+        shutil.copyfile(source, os.path.join(literate_dir, name))
 
 
 def create_stubs(literate_dir):
@@ -108,6 +151,7 @@ def main():
 
     # Create stubs for missing JS files
     create_stubs(literate_dir)
+    copy_site_assets(literate_dir)
 
     # Fix all HTML files
     count = 0
@@ -118,7 +162,7 @@ def main():
                 if fix_html_file(path):
                     count += 1
 
-    print(f'  Injected KaTeX into {count} Verso HTML files.')
+    print(f'  Styled {count} Verso HTML files.')
 
 
 if __name__ == '__main__':
