@@ -33,7 +33,7 @@ Is there a polynomial $f:\mathbb{Z}\to \mathbb{Z}$ of degree at least $2$ and a 
 $A\subset \mathbb{Z}$ such that for any $n\in \mathbb{Z}$ there is exactly one $a\in A$ and
 $b\in \{ f(k) : k\in\mathbb{Z}\}$ such that $n=a+b$?
 -/
-@[category research open, AMS 12]
+@[category research solved, AMS 12]
 theorem erdos_477 : answer(sorry) ↔
     ∃ f : ℤ[X], 2 ≤ f.degree ∧ ∃ A : Set ℤ,
       ∀ z, ∃! ab ∈ A ×ˢ (Set.range f.eval), z = ab.1 + ab.2 := by
