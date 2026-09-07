@@ -57,7 +57,7 @@ remain open for small $n$ (see `erdos_506.variants.small_n`).
 -- * The hypothesis `4 ≤ n` is not a restriction of the problem, but excludes the degenerate range
 --   where no admissible configuration exists: fewer than three points are collinear, and any three
 --   non-collinear points lie on a common circle, so the set below is empty for `n < 4`.
-@[category research open, AMS 51 52]
+@[category research solved, AMS 51 52]
 theorem erdos_506 (n : ℕ) (hn : 4 ≤ n) :
     IsLeast { k : ℕ | ∃ P : Finset ℝ²,
         P.card = n ∧ ¬ Collinear ℝ (P : Set ℝ²) ∧ ¬ Cospherical (P : Set ℝ²) ∧

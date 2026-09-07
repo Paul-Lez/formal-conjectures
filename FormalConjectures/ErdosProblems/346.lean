@@ -33,7 +33,7 @@ namespace Erdos346
 
 /-- Is it true that for every lacunary, strongly complete sequence `A` that is not complete whenever
 infinitely many terms are removed from it, `lim A (n + 1) / A n = (1 + √5) / 2`? -/
-@[category research open, AMS 11]
+@[category research solved, AMS 11]
 theorem erdos_346 : answer(sorry) ↔ ∀ {A : ℕ → ℕ}, IsLacunary A → IsAddStronglyCompleteNatSeq A →
     (∀ B : Set ℕ, B ⊆ range A → B.Infinite → ¬ IsAddComplete (range A \ B)) →
     Tendsto (fun n => A (n + 1) / (A n : ℝ)) atTop (𝓝 ((1 + √5) / 2)) := by

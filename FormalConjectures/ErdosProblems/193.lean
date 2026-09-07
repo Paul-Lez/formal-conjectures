@@ -44,7 +44,7 @@ Let $S \subseteq \mathbb{Z}^3$ be a finite set and let $A = \lbrace a_1, a_2, \l
 an infinite $S$-walk, so that $a_{i+1} - a_i \in S$ for all $i$. Must $A$ contain three collinear
 points?
 -/
-@[category research open, AMS 5]
+@[category research solved, AMS 5]
 theorem erdos_193 :
     answer(sorry) ↔ ∀ S : Set (Fin 3 → ℤ), S.Finite →
       /- The statement's $A = \lbrace a_1, a_2, \ldots \rbrace$ is an infinite set.
