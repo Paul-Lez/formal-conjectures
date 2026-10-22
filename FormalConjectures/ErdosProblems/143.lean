@@ -22,11 +22,14 @@ public import FormalConjecturesUtil
 
 *References:*
 - [erdosproblems.com/143](https://www.erdosproblems.com/143)
-- [Be35] Behrend, F., *On sequences of numbers not divisible one by another*. J. London Math. Soc.
-  (1935), 42-44.
+- [Be35] Behrend, F., *On sequences of numbers not divisible by another*. J. London Math. Soc.
+  (1935), 42-45.
 - [KLL25] Koukoulopoulos, D., Lamzouri, Y. and Lichtman, J. D., *Erdős's integer dilation
   approximation problem and GCD graphs*. [arXiv:2502.09539](https://arxiv.org/abs/2502.09539)
   (2025).
+- [Ap26] Apicella, Mattia, *A rational counterexample to the reciprocal-logarithmic assertion
+  in Erdős problem 143* (2026).
+  [Source linked by the problem page](https://github.com/mapice/erdos-143-candidate-disproof/tree/0f4b96940c97c7e0c36d17b584ec2bf1d842c02a)
 -/
 
 @[expose] public section
@@ -50,20 +53,23 @@ $$
 \liminf \frac{|A \cap [1,x]|}{x} = 0?
 $$
 -/
-@[category research open, AMS 11]
-theorem erdos_143.parts.i : answer(sorry) ↔ ∀ (A : Set ℝ), WellSeparatedSet A →
+@[category research open, question, AMS 11]
+theorem erdos_143.parts.i : ∀ (A : Set ℝ), WellSeparatedSet A →
     liminf (fun x => (A ∩ (Set.Icc 1 x)).ncard / x) atTop = 0 := by
   sorry
 
 /--
-Or
+Does this imply that
 $$
-\sum_{x \in A} \frac{1}{x \log x} < \infty,
+\sum_{x \in A} \frac{1}{x \log x} < \infty?
 $$
+
+The problem page records a negative answer, using the counterexample of Apicella [Ap26].
 -/
-@[category research open, AMS 11]
-theorem erdos_143.parts.ii (A : Set ℝ) (h : WellSeparatedSet A) :
-    Summable fun (x : A) ↦ 1 / (x * Real.log x) := by
+@[category research solved, question, AMS 11]
+theorem erdos_143.parts.ii :
+    ¬ ∀ (A : Set ℝ), WellSeparatedSet A →
+      Summable fun (x : A) ↦ 1 / (x * Real.log x) := by
   sorry
 
 /--
@@ -74,8 +80,8 @@ $$
 
 This was proved by Koukoulopoulos, Lamzouri, and Lichtman [KLL25].
 -/
-@[category research solved, AMS 11]
-theorem erdos_143.parts.iii : answer(True) ↔ ∀ (A : Set ℝ), WellSeparatedSet A →
+@[category research solved, question, AMS 11]
+theorem erdos_143.parts.iii : ∀ (A : Set ℝ), WellSeparatedSet A →
     (fun n : ℕ ↦ ∑ᶠ x ∈ A ∩ Set.Iio (n : ℝ), 1 / x) =o[atTop] (fun n : ℕ ↦ Real.log n) := by
   sorry
 
@@ -91,8 +97,8 @@ $$
 
 The variable $x$ on the right-hand side is read as $n$.
 -/
-@[category research open, AMS 11]
-theorem erdos_143.variants.behrend_bound : answer(sorry) ↔ ∀ (A : Set ℝ), WellSeparatedSet A →
+@[category research open, question, AMS 11]
+theorem erdos_143.variants.behrend_bound : ∀ (A : Set ℝ), WellSeparatedSet A →
     (fun n : ℕ ↦ ∑ᶠ x ∈ A ∩ Set.Iio (n : ℝ), 1 / x) =O[atTop]
       (fun n : ℕ ↦ Real.log n / Real.sqrt (Real.log (Real.log n))) := by
   sorry
